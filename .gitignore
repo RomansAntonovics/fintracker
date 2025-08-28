@@ -1,0 +1,21 @@
+# Symfony / PHP
+/vendor/
+/var/
+/.env.local
+/.env.local.php
+/.phpunit.cache/
+
+# Node / React (если фронт — во /frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Docker/Compose
+/.env.docker
+/.envrc
+
+# IDE/OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
