@@ -9,9 +9,14 @@ use App\Repository\TransactionRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 #[ApiResource]
+#[ApiFilter(OrderFilter::class, properties: ['occurredAt' => 'DESC', 'amount' => 'DESC'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(SearchFilter::class, properties: ['account' => 'exact', 'type' => 'exact'])]
 class Transaction
 {
     #[ORM\Id]
@@ -33,9 +38,9 @@ class Transaction
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(name: 'occurred_at', type: 'datetime_immutable')]
     #[Assert\NotNull]
-    private ?DateTimeImmutable $occuredAt = null;
+    private ?DateTimeImmutable $occurredAt = null;
 
     // Link to Account (more transactions → one account)
     #[ORM\ManyToOne(inversedBy: 'transactions')]
@@ -51,8 +56,8 @@ class Transaction
     public function setType(TransactionType $type): static { $this->type = $type; return $this; }
     public function getDescription(): ?string { return $this->description; }
     public function setDescription(?string $d): static { $this->description = $d; return $this; }
-    public function getOccuredAt(): ?\DateTimeImmutable { return $this->occuredAt; }
-    public function setOccuredAt(\DateTimeImmutable $dt): static { $this->occuredAt = $dt; return $this; }
+    public function getOccurredAt(): ?\DateTimeImmutable { return $this->occurredAt; }
+    public function setOccurredAt(\DateTimeImmutable $dt): static { $this->occurredAt = $dt; return $this; }
     public function getAccount(): ?Account { return $this->account; }
     public function setAccount(Account $account): static { $this->account = $account; return $this; }
 }

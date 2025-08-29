@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec6867681f0ac5b3eed7e4aa1769e66f",
+    "content-hash": "c7319e3066a82379e2f6879f0ce03dca",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -96,7 +96,7 @@
         },
         {
             "name": "api-platform/doctrine-orm",
-            "version": "v4.1.21",
+            "version": "v4.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/doctrine-orm.git",
@@ -175,7 +175,7 @@
                 "rest"
             ],
             "support": {
-                "source": "https://github.com/api-platform/doctrine-orm/tree/v4.1.21"
+                "source": "https://github.com/api-platform/doctrine-orm/tree/v4.1.22"
             },
             "time": "2025-06-06T14:56:47+00:00"
         },
