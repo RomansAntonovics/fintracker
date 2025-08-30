@@ -29,6 +29,13 @@ class Account
     #[Assert\GreaterThanOrEqual(value: 0, message: "Balance cannot be negative")]
     private ?float $balance = null;
 
+    #[ORM\Column(type: 'float')]
+    private float $openingBalance = 0.0;
+
+    public function getOpeningBalance(): float { return $this->openingBalance; }
+    public function setOpeningBalance(float $v): static { $this->openingBalance = $v; return $this; }
+
+
     #[ORM\Column(length: 3)]
     #[Assert\NotBlank(message: "Currency is required")]
     #[Assert\Length(
