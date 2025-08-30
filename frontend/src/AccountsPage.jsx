@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import AccountsForm from "./AccountsForm";
+
 
 export default function AccountsPage() {
     const [items, setItems] = useState([]);
@@ -18,16 +20,15 @@ export default function AccountsPage() {
             })
             .catch(e => setErr(e.response?.data?.detail || e.message));
     }, []);
-    
+
     return (
-        <div style={{padding: 16}}>
+        <div style={{ padding: 16 }}>
             <h1>Accounts</h1>
-            {err && <div style={{color: "crimson"}}>{err}</div>}
+            <AccountsForm onCreated={() => window.location.reload()} />
+            {err && <div style={{ color: "crimson" }}>{err}</div>}
             <ul>
-                {items.map(a => (
-                    <li key={a.id}>
-                        {a.name} — {a.balance} {a.currency}
-                    </li>
+                {items.map((a) => (
+                    <li key={a.id}>{a.name} — {a.balance} {a.currency}</li>
                 ))}
             </ul>
         </div>
