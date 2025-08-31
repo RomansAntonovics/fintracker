@@ -16,7 +16,7 @@ class AccountBalanceService
     public function recalc(Account $account): void
     {
         $net = $this->transactions->getNetSumForAccount($account);
-        $account->setBalance($net);
+        $account->setBalance($account->getOpeningBalance() + $net);
         $this->em->persist($account);
     }
 }
