@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import AccountsForm from "./AccountsForm";
+import { Link } from "react-router-dom";
+
 
 
 export default function AccountsPage() {
@@ -28,7 +30,11 @@ export default function AccountsPage() {
             {err && <div style={{ color: "crimson" }}>{err}</div>}
             <ul>
                 {items.map((a) => (
-                    <li key={a.id}>{a.name} — {a.balance} {a.currency}</li>
+                    <li key={a.id}>
+                        <Link to={`/accounts/${a.id}`}>
+                            {a.name} — {a.balance} {a.currency}
+                        </Link>
+                    </li>
                 ))}
             </ul>
         </div>
