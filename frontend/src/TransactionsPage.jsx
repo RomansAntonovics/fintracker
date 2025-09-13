@@ -11,7 +11,7 @@ export default function TransactionsPage() {
   const [err, setErr] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // === NEW: локальное состояние фильтров/сортировки/пагинации ===
+  // === NEW: local state jf the filters/sorting/pagination ===
   const [filters, setFilters] = useState({
     type: "",          // "", "INCOME", "EXPENSE"
     from: "",          // "YYYY-MM-DD"
@@ -57,10 +57,20 @@ export default function TransactionsPage() {
       if (filters.from) params["occurredAt[after]"] = toISOStartOfDay(filters.from);
       if (filters.to) params["occurredAt[before]"] = toISOEndOfDay(filters.to);
 
-      const tx = (await api.get("/api/transactions", { params })).data;
-      const list = Array.isArray(tx) ? tx : tx.member || tx["hydra:member"] || [];
+        const tx = (
+            await api.get("/api/transactions", {
+                params,
+                headers: { Accept: "application/ld+json" },
+            })
+        ).data;      
+        const list = Array.isArray(tx) ? tx : tx.member || tx["hydra:member"] || [];
       setItems(list);
-      setTotal(tx.totalItems ?? 0); // === NEW ===
+      const totalItems =
+          (typeof tx.totalItems === "number" ? tx.totalItems : undefined) ??
+          (typeof tx["hydra:totalItems"] === "number" ? tx["hydra:totalItems"] : undefined) ??
+      0;
+        console.log(tx)
+      setTotal(totalItems);
     } catch (e) {
       setErr(e.response?.data?.detail || e.message);
     }
@@ -112,11 +122,10 @@ export default function TransactionsPage() {
     }
   };
 
-  // === NEW: обработчики фильтров и пагинации ===
+  // === NEW: filater and pagination handlers ===
   const applyFilters = (evt) => {
     evt.preventDefault();
-    setFilters((f) => ({ ...f, page: 1 })); // при смене фильтров сбрасываем на первую страницу
-    // reload() вызовется автоматически через useEffect
+    setFilters((f) => ({ ...f, page: 1 }));
   };
 
   const setFilterField = (key, value) =>
@@ -168,7 +177,7 @@ export default function TransactionsPage() {
               }}
           >
           <div>
-        {/* === NEW: панель фильтров транзакций === */}
+        {/* === NEW: transaction filter panel === */}
         <h2>Filters</h2>
         <form
             onSubmit={applyFilters}
