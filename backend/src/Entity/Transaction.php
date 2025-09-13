@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\TransactionType;
 use App\Repository\TransactionRepository;
@@ -14,8 +15,14 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
-#[ApiResource]
-#[ApiFilter(OrderFilter::class, properties: ['occurredAt' => 'DESC', 'amount' => 'DESC'], arguments: ['orderParameterName' => 'order'])]
+#[ApiResource(
+    order: ['occurredAt' => 'DESC', 'id' => 'DESC'],
+    paginationEnabled: true,
+    paginationClientItemsPerPage: true,
+    paginationItemsPerPage: 10
+)]
+#[ApiFilter(DateFilter::class, properties: ['occurredAt'])]
+#[ApiFilter(OrderFilter::class, properties: ['occurredAt', 'amount', 'id'], arguments: ['orderParameterName' => 'order'])]
 #[ApiFilter(SearchFilter::class, properties: ['account' => 'exact', 'type' => 'exact'])]
 class Transaction
 {

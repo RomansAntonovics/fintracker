@@ -20,3 +20,8 @@ services:
     # please note that last definitions always *replace* previous ones
     App\EventSubscriber\TransactionBalanceSubscriber:
         tags: ['doctrine.event_subscriber']
+
+    App\State\TransactionPersistProcessor:
+        decorates: 'api_platform.doctrine.orm.state.persist_processor'
+        arguments:
+            $inner: '@App\State\TransactionPersistProcessor.inner'
