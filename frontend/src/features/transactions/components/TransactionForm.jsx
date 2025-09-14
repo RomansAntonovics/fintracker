@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import Loader from './Loader';
+
 
 const nowForDatetimeLocal = () => {
     const d = new Date();
@@ -44,7 +46,8 @@ export default function TransactionForm({ accountIri, onCreated }) {
                 <input type="text" {...register("description")} disabled={isSubmitting} style={{ display: "block", width: "100%" }} />
             </label>
 
-            <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving..." : "Add"}</button>
-        </form>
+            <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? <Loader label="Saving…" size="sm" /> : 'Add transaction'}
+            </button>        </form>
     );
 }
