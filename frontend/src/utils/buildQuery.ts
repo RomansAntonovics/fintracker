@@ -15,9 +15,9 @@ export function buildTransactionsSearchParams(q: TxnQuery): URLSearchParams {
     if (q.after) sp.set('occurredAt[after]', q.after);
     if (q.before) sp.set('occurredAt[before]', q.before);
     if (q.order) sp.set('order[occurredAt]', q.order);
-    
-    if (q.page) sp.set('page', String(q.page));
-    if (q.itemsPerPage) sp.set('itemsPerPage', String(q.itemsPerPage));
+
+    sp.set('page', String(q.page ?? 1));
+    sp.set('itemsPerPage', String(q.itemsPerPage ?? 10));
     
     if (q.accountIri) sp.set('account', q.accountIri);
     

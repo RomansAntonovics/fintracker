@@ -1,0 +1,34 @@
+.ft-loader {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+.ft-loader__spinner {
+    width: 1em;
+    height: 1em;
+    border: 3px solid rgba(0,0,0,0.15);
+    border-top-color: rgba(0,0,0,0.65);
+    border-radius: 50%;
+    animation: ft-spin 0.9s linear infinite;
+}
+.ft-loader--sm .ft-loader__spinner { width: 0.85em; height: 0.85em; border-width: 2px; }
+.ft-loader--lg .ft-loader__spinner { width: 1.4em; height: 1.4em; border-width: 3px; }
+
+.ft-loader--overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(1px);
+    z-index: 10;
+}
+
+.ft-loader__label {
+    user-select: none;
+}
+
+@keyframes ft-spin {
+    to { transform: rotate(360deg); }
+}
