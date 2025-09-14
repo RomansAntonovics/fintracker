@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import AccountSummary from "../features/transactions/components/AccountSummary";
 import TransactionFilters from "../features/transactions/components/TransactionFilters";
@@ -8,6 +8,9 @@ import Pager from "../features/transactions/components/Pager";
 import {
   fetchAccount, fetchTransactions, createTransaction,
 } from "../features/transactions/hooks/useTransactionsApi";
+
+const toISOStartOfDay = (d) => new Date(`${d}T00:00:00`).toISOString();
+const toISOEndOfDay   = (d) => new Date(`${d}T23:59:59`).toISOString();
 
 export default function TransactionsPage() {
   const { id } = useParams();
@@ -22,24 +25,29 @@ export default function TransactionsPage() {
     type: "", from: "", to: "", order: "desc", page: 1, itemsPerPage: 10,
   });
 
-  const reload = async () => {
-    setErr("");
-    try {
-      const [acc, tx] = await Promise.all([
-        fetchAccount(accountIri),
-        fetchTransactions(accountIri, filters),
-      ]);
-      setAccount(acc);
-      setItems(tx.items);
-      setTotal(tx.total);
-    } catch (e) {
-      setErr(e.response?.data?.detail || e.message);
-    }
-  };
+   const reload = useCallback(async () => {
+       setErr("");
+       try {
+               const acc = await fetchAccount(accountIri);
+           setAccount(acc);
+                   const params = {
+                 account: accountIri,
+                 page: filters.page,
+                 itemsPerPage: filters.itemsPerPage,
+                 "order[occurredAt]": filters.order.toUpperCase(),
+               };
+           if (filters.type) params.type = filters.type;
+           if (filters.from) params["occurredAt[after]"] = toISOStartOfDay(filters.from);
+           if (filters.to) params["occurredAt[before]"] = toISOEndOfDay(filters.to);
+                   const { items: list, total: totalItems } = await fetchTransactions(params);
+           setItems(list);
+           setTotal(totalItems ?? 0);
+         } catch (e) {
+           setErr(e.response?.data?.detail || e.message);
+         }
+     }, [accountIri, filters]);
 
-  useEffect(() => { reload(); /* eslint-disable-next-line */ }, [
-    id, filters.page, filters.itemsPerPage, filters.order, filters.type, filters.from, filters.to,
-  ]);
+  useEffect(() => { reload(); }, [reload]);
 
   const onApplyFilters = () => setFilters((f) => ({ ...f, page: 1 }));
   const nextPage = () => setFilters((f) => ({ ...f, page: Math.max(1, f.page + 1) }));
