@@ -1,0 +1,21 @@
+.txn-list__wrap {
+    position: relative; /* нужно для overlay */
+}
+.txn-list__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.txn-list__table th, .txn-list__table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+.txn--amount { font-variant-numeric: tabular-nums; }
+.txn--income  { color: #1b7f2a; }   /* зелёный */
+.txn--expense { color: #c22b2b; }   /* красный */
+
+/* опционально для темной темы */
+@media (prefers-color-scheme: dark) {
+    .txn--income  { color: #34d399; }
+    .txn--expense { color: #f87171; }
+}
+
