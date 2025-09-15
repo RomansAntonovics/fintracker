@@ -18,6 +18,7 @@ use ApiPlatform\Metadata\ApiFilter;
 #[ApiResource(
     order: ['occurredAt' => 'DESC', 'id' => 'DESC'],
     paginationEnabled: true,
+    paginationClientEnabled: true,
     paginationClientItemsPerPage: true,
     paginationItemsPerPage: 10
 )]
