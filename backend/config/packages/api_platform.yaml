@@ -5,6 +5,12 @@ api_platform:
         stateless: true
         cache_headers:
             vary: [ 'Content-Type', 'Authorization', 'Origin' ]
+            pagination_enabled: true
+            pagination_client_enabled: true
+            pagination_client_items_per_page: true
+            items_per_page: 10
+            page_parameter_name: page
+            items_per_page_parameter_name: itemsPerPage
     formats:
         jsonld: [ 'application/ld+json' ]
         json: [ 'application/json' ]
